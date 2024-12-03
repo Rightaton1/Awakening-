@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Box</title>
+    <style>
+        body {
+         font-family: Arial, sans-serif;
+            background-color: maroon;
+            color: aqua;
+        }
+        h1 {
+        	background-color: green;
+        width: 400px;
+        color: red;
+        }
+        h6 {
+        	background-color: green;
+        color: red;
+        }
+        
+        #mango {
+  position: absolute;
+  top: 5%;
+  left: 119%;
+}
+
+  
+        #orange {
+  position: absolute;
+  top: 154%;
+  left: 119%;
+}
+
+#banana {
+	position: absolute;
+	border: 2px solid lime;
+	background-color: lightgrey;
+	color: blue;
+	height: 867px;
+	width: 395px;
+	top: 18%;
+	left: 119%;
+	}
+	
+#apple {
+	position: absolute;
+	border: 2px solid lime;
+	background-color: black;
+	color: blue;
+	height: 159px;
+	width: 458px;
+	top: 230%;
+	left: 100%;
+	}
+	#plum {
+	position: absolute;
+	top: 256%;
+	left: 116%;
+	}
+		#bob {
+	position: absolute;
+	top: 6%;
+	left: 1%;
+	}
+	#cherry {
+	position: absolute;
+	border: 2px solid red;
+	background-color: black;
+	color: blue;
+	height: 197px;
+	width: 458px;
+	top: 333%;
+	left: 100%;
+	}
+
+        #chatBox {
+            width: 379px;
+            height: 300px;
+            border: 2px solid red;
+            overflow-y: scroll;
+            padding: 10px;
+            position: relative;
+            background-color: lightgrey;
+            color: blue;
+        }
+        #inputBox {
+            width: 400px;
+            display: flex;
+             border: 2px solid green;
+        }
+        #userInput {
+            flex: 1;
+            padding: 10px;
+            background-color: red;
+            color: red;
+        }
+        #sendButton {
+            padding: 10px;
+            background-color:black;
+            color: red;
+            border: 2px solid lime;
+        }
+        
+    </style>
+</head>
+<body>
+<div id="mango">
+<a href="https://youtube.com/playlist?list=PLeDaNq2IUj0uKx0cnOumI4jOyzbyjhHZI&si=Rk_iMTXr-FE-qptS">  <img src="https://i.pinimg.com/564x/59/32/29/593229739184504afd9507cc42a9cb86.jpg" style="width:400px; height:80px;" /></a>
+</div>
+
+<div id="orange">
+<a href="https://youtube.com/playlist?list=PLeDaNq2IUj0t0GNX6fMgFEr56YeJXHLEK&si=eeCafJdZj4GcoDxE">  <img src="https://i.pinimg.com/564x/59/32/29/593229739184504afd9507cc42a9cb86.jpg" style="width:400px; height:80px;" /></a>
+</div>
+
+<div id="banana">
+<div class="sidenav"><hr />
+  |<a href="https://youtu.be/OGveFG8G0Ao?si=rmuEuzw9NnEagMQn" target="_blank">Old Hits</a>|
+  <a href="https://www.jango.com/browse_music/genre/Hip%20Hop?gad_source=1&gclid=Cj0KCQjwu-63BhC9ARIsAMMTLXTwIrEdyBJTZnyC1IEZNockaJioAJvRucJVMcZ21m-7m_54owa_y6kaAkAwEALw_wcB" target="_blank">Hip Hop</a>|
+  <a href="https://youtube.com/playlist?list=PLeDaNq2IUj0uCGB79jyOpxuUjWtC8HkHr&si=GRrlKLbGRa-Aa3C1">Garnett Silk</a>|
+  |<a href="index2.html">Previous</a>|
+</div><hr />
+
+
+<div class="main">
+
+</div>
+  <div id="bob"><iframe src="https://www.accuweather.com/en/jm/kingston/214971/weather-radar/214971" height="805px" width="50%"></iframe></div>
+  <iframe src="https://www.theepochtimes.com/world/ccp-backed-united-nations-pact-for-the-future-draws-global-criticism-5731676" height="805px" width="50%" align="right">></iframe>
+  </div>
+<div id="apple"> <center>
+		<div  style="display:inline-block;text-shadow:#030303 4px 4px 4px;position:relative;vertical-align: middle;padding:8px;font-size:45px;color:red;font-weight:normal">Support</div>
+	<div  style="display:inline-block;text-shadow:#030303 4px 4px 4px;position:relative;vertical-align: middle;padding:8px;font-size:14px;color:red;font-weight:normal">My Helping Hand To Reach This Milestone To Help Others. </div>
+	<div class="btnAnim858"  style="display:inline-block;position:relative;vertical-align: middle;padding:8px" >
+		<a target="_blank" href="https://www.paypal.com/ncp/payment/38MK5LVE5YCN2"><input type="button" value="Visit Now" style="margin:0px;background:#000000;padding:8px;border:3px solid red;color:lime;border-radius:0px;cursor:pointer" /></a></div>
+</div></center>
+  </div>
+  <div id="plum"><iframe src="https://youtube.com/embed/playlist?list=PLeDaNq2IUj0t0GNX6fMgFEr56YeJXHLEK&si=tYGxkIzJvelz6_2w" height="480" width="400"></iframe></div><br /><hr />
+    <div id="cherry">
+     <center>
+		<div  style="display:inline-block;text-shadow:#030303 4px 4px 4px;position:relative;vertical-align: middle;padding:8px;font-size:45px;color:lime;font-weight:normal">Donate</div>
+	<div  style="display:inline-block;text-shadow:#030303 4px 4px 4px;position:relative;vertical-align: middle;padding:8px;font-size:14px;color:lime;font-weight:normal">To RovRavLimited  Houses And Feed At Least 936 Homeless People.</div>
+	<div class="btnAnim858"  style="display:inline-block;position:relative;vertical-align: middle;padding:8px" >
+		<a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=QCTZXYKRX2PGL"><input type="button" value="Visit Now" style="margin:0px;background:#000000;padding:8px;border:3px solid red;color:lime;border-radius:0px;cursor:pointer" /></a></div>
+</div></center>
+</div>
+	<center>
+<h1>Chatterbox 1</h1>
+</center>
+<div id="chatBox"> <div class="message bot-message">
+<h6>Say Something, Also Use All Emojis😎/In Chatterbox/No Pictures</h6>
+</div></div>
+<div id="inputBox">
+    <input type="text" id="userInput" placeholder="Type a message...">
+    <button id="sendButton">Send</button>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chatBox');
+    const userInput = document.getElementById('userInput');
+    const sendButton = document.getElementById('sendButton');
+    sendButton.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const message = userInput.value.trim();
+        if (message) {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            chatBox.appendChild(messageElement);
+            userInput.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
+    }
+    </script>
+
+      <script id="formaloo-chatbot-script" type="text/props" data-widget-form="formaloo-widget" data-prop-slug="UzHqFj9V" data-prop-type="chatbot" data-prop-position="right" data-prop-once_per_user="false" dir="ltr" style="font-size: 13px; line-height: normal"></script> <script async src="https://chatbot.formaloo.net/script.js"></script>
+      <style>
+.BorderColorChangeElement {
+  	animation: BorderColorChange 1s ease-out 0s infinite alternate none running;
+}
+@keyframes BorderColorChange{
+  	0%  { border: 10px solid #ffc0cb;}
+  	100%  { border: 10px solid #ff69b4;}
+}
+@keyframes rotateAnim {
+    0% { transform: rotate(deg);}
+    100% { transform:rotate(360deg);}
+}
+@keyframes scaler {
+  0% {
+    transform: scale(1);
+  }
+  100% {    transform: scale(1.5);
+  }
+}
+.imgAnim858 {
+  animation: rotateAnim 10s linear 0s infinite forwards running;
+}
+.btnAnim858 {
+  animation: scaler 1s linear 0s infinite alternate none running;
+}
+.btnAnim858:hover{
+  animation-play-state: paused;
+}
+</style>
+	<center>
+<h1>Chatterbox</h1>
+</center><hr />
+  <iframe width="403" height="400" src="https://youtube.com/embed/playlist?list=PLeDaNq2IUj0t4xySbX1Nhjcxd9TJ_OLqJ&si=3WDSReFAznDZdYl6" frameborder="0" allowfullscreen></iframe><br /><hr />
+  	<center>
+<h1>Chatterbox 2</h1>
+</center><hr />
+<html>
+
+<head>
+
+<title>Chat Box 2</title>
+
+<script type="text/javascript">
+function writeMessage(form){
+    var now = new Date().toLocaleString()
+    var user = form.username.value;
+    var message = form.msg.value;
+    document.getElementById("chat").innerHTML = document.getElementById("chat").innerHTML + now  + " | " + user + " UserName: " + message + "<br />";
+}
+</script>
+</head>
+<body>
+<div id="chat" style="width: 600px; height: 400px; overflow-y: scroll;">
+</div>
+<form name="message" method="POST"><hr />
+  <label for="username">UserName</label>
+  <input type="text" name="username" /><br /><hr />
+  <label for="msg">Messages</label>
+  <input type="text" name="msg" /><br /><hr /><center><br />
+  <input type="button" name="button" value="Submit" onClick="writeMessage(this.form)" /></center>
+</form>
+</body>
+</html><br /><hr />
+
+	<center>
+<h1>Chatterbox 2</h1>
+</center><hr />
+
+  <iframe width="403" height="315" src="https://youtube.com/embed/playlist?list=PLGJaRRPpxTS1Yr3U-4MRnBmgintzRVAX4&si=GQETic-tw8mDNI0G" frameborder="0" allowfullscreen></iframe><br /><hr />
+  
+	<center>
+<h1>Chatterbox</h1>
+</center><hr />
+
+<div class="BorderColorChangeElement" style="margin: 0 auto;text-align:center;overflow:hidden;border-radius:0px;-webkit-box-shadow: 16px 17px 18px -7px rgba(18,1,18,0.61);-moz-box-shadow: 16px 17px 18px -7px rgba(18,1,18,0.61);box-shadow: 16px 17px 18px -7px rgba(18,1,18,0.61);background:#009688;border:10px solid #000000;padding:8px;max-width:calc(100% - 48px);width:700px">
+	<div class="imgAnim858"  style="display: inline-block;position:relative;vertical-align: middle;padding:8px">
+		<img src="https://1.bp.blogspot.com/-zXwrowTem0M/Xj3xuRee9SI/AAAAAAAABqQ/JKCg_K_ObTY26HhXI1JGcPtR5NLErWE8wCLcBGAsYHQ/s1600/sea-4810958_1280.jpg" style="max-width:100%;width:60px"/>
+	</div>
+	<div  style="display:inline-block;text-shadow:#030303 4px 4px 4px;position:relative;vertical-align: middle;padding:8px;font-size:45px;color:#ffffff;font-weight:normal">Title Here</div>
+	<div  style="display:inline-block;text-shadow:#030303 4px 4px 4px;position:relative;vertical-align: middle;padding:8px;font-size:14px;color:#ffffff;font-weight:normal">Display Description of your ad here</div>
+	<div class="btnAnim858"  style="display:inline-block;position:relative;vertical-align: middle;padding:8px" >
+		<a target="_blank" href=""><input type="button" value="Visit Now" style="margin:0px;background:#000000;padding:8px;border:3px solid red;color:#ffffff;border-radius:0px;cursor:pointer" /></a></div>
+</div><br />
+<center>
+<h1>Chatterbox 3</h1>
+</center><hr />
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Chat Box1</title>
+	
+
+<script type="text/javascript">
+
+var know = {
+
+"What is your name ?":"I'm Batman... Just joking, I am Chatbot 1.0, designed to chat with you. So? What are you waiting for? Talk to me!",
+
+"Who built you?":"What is your business? Anyway, for what it's worth, I was designed by Ndubisi Obidigbo, Mainly in Javascript. You happy?",
+
+"he":"her"
+
+};
+
+function talk() {
+
+var user = document.getElementById("userBox").value;
+
+document.getElementById("chatLog").innerHTML += user + "<br>";
+
+if (user in know) {
+
+document.getElementById("chatLog").innerHTML += "Bot: " + know[user] + "<br>";
+
+} else {
+
+document.getElementById("chatLog").innerHTML += "🇯🇲❤💛💚🖤⭐⚽️⭐😎.<br>";
+
+}
+
+}
+	
+</script>
+
+</head>
+
+<body>
+
+
+<p id="chatLog"><!--CHAT--></p>
+
+<input type="text" id="userBox" onkeydown="if (event.keyCode == 13) {talk()}"><hr />
+	
+<center>
+<h1>Chatterbox 3</h1>
+</center>
+
+</body>
+
+</html>
+  <div class="messages">
+    <div class="messages-content"></div>
+  </div>
+</body>
+</html>
+

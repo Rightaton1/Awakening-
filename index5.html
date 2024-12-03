@@ -1,0 +1,797 @@
+<form>
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+</form>
+<form>
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+</form>
+<form>
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+</form>
+<form>
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+</form>
+<form>
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+<input type="text" name="numbers" size="12px" max-length="10px">
+</form>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Calendar</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    #calendar {
+      width: 350px;
+      padding: 20px;
+      background: #333;
+      color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+    #calendar header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #calendar header button {
+      background: #555;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #calendar header button:hover {
+      background: #777;
+    }
+    #calendar header h2 {
+      margin: 0;
+    }
+    #days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+    #dates {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+    .date {
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #555;
+    }
+    .date.today {
+      background: #f39c12;
+      color: #fff;
+    }
+    .date:hover {
+      background: #777;
+    }
+  </style>
+</head>
+<body>
+
+<div id="calendar">
+  <header>
+    <button onclick="prevMonth()">&#9664;</button>
+    <h2 id="monthYear"></h2>
+    <button onclick="nextMonth()">&#9654;</button>
+  </header>
+  <div id="days">
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
+  <div id="dates"></div>
+</div>
+
+<script>
+  const monthYearElement = document.getElementById("monthYear");
+  const datesElement = document.getElementById("dates");
+
+  let currentDate = new Date();
+  let currentMonth = currentDate.getMonth();
+  let currentYear = currentDate.getFullYear();
+
+  function renderCalendar() {
+    datesElement.innerHTML = "";
+    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    monthYearElement.innerText = `${currentDate.toLocaleString('default', { month: 'long' })} ${currentYear}`;
+
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      const emptyCell = document.createElement("div");
+      datesElement.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateCell = document.createElement("div");
+      dateCell.classList.add("date");
+      dateCell.innerText = day;
+
+      if (
+        day === currentDate.getDate() &&
+        currentMonth === currentDate.getMonth() &&
+        currentYear === currentDate.getFullYear()
+      ) {
+        dateCell.classList.add("today");
+      }
+
+      datesElement.appendChild(dateCell);
+    }
+  }
+
+  function prevMonth() {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    currentDate.setMonth(currentMonth);
+    currentDate.setFullYear(currentYear);
+    renderCalendar();
+  }
+
+  function nextMonth() {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    currentDate.setMonth(currentMonth);
+    currentDate.setFullYear(currentYear);
+    renderCalendar();
+  }
+
+  renderCalendar();
+</script>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    #calculator {
+      width: 300px;
+      padding: 20px;
+      background: #333;
+      border-radius: 8px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+    #result {
+      width: 100%;
+      height: 50px;
+      font-size: 1.5em;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #222;
+      color: #fff;
+    }
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .button {
+      flex: 1;
+      padding: 15px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      background-color: #555;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #777;
+    }
+    .button.operator {
+      background-color: #f39c12;
+    }
+    .button.operator:hover {
+      background-color: #e67e22;
+    }
+  </style>
+</head>
+<body>
+
+<div id="calculator">
+  <input type="text" id="result" disabled>
+
+  <div class="button-row">
+    <button class="button" onclick="appendValue('7')">7</button>
+    <button class="button" onclick="appendValue('8')">8</button>
+    <button class="button" onclick="appendValue('9')">9</button>
+    <button class="button operator" onclick="appendValue('/')">/</button>
+  </div>
+
+  <div class="button-row">
+    <button class="button" onclick="appendValue('4')">4</button>
+    <button class="button" onclick="appendValue('5')">5</button>
+    <button class="button" onclick="appendValue('6')">6</button>
+    <button class="button operator" onclick="appendValue('*')">x</button>
+  </div>
+
+  <div class="button-row">
+    <button class="button" onclick="appendValue('1')">1</button>
+    <button class="button" onclick="appendValue('2')">2</button>
+    <button class="button" onclick="appendValue('3')">3</button>
+    <button class="button operator" onclick="appendValue('-')">-</button>
+  </div>
+
+  <div class="button-row">
+    <button class="button" onclick="appendValue('0')">0</button>
+    <button class="button" onclick="appendValue('.')">.</button>
+    <button class="button" onclick="calculate()">=</button>
+    <button class="button operator" onclick="appendValue('+')">+</button>
+  </div>
+
+  <div class="button-row">
+    <button class="button" onclick="clearResult()" style="flex: 1;">C</button>
+  </div>
+</div>
+
+<script>
+  function appendValue(value) {
+    document.getElementById("result").value += value;
+  }
+
+  function clearResult() {
+    document.getElementById("result").value = "";
+  }
+
+  function calculate() {
+    try {
+      document.getElementById("result").value = eval(document.getElementById("result").value);
+    } catch (error) {
+      document.getElementById("result").value = "Error";
+    }
+  }
+</script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotto Number Generator</title>
+    <style>
+    	#apple {
+    	background-color: red;
+        border: 2px solid black;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 90%;
+        left: 172%;
+        }
+        	#grape {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 115%;
+        left: 172%;
+        }
+        	#melon {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 140%;
+        left: 172%;
+        }
+            	#mango {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 165%;
+        left: 172%;
+        }
+            	#cane {
+    	background-color: red;
+        border: 2px solid black;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 190%;
+        left: 172%;
+        }
+            	#pine {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 215%;
+        left: 172%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .numbers {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lotto Number Generator</h1>
+        <div class="numbers" id="lottoNumbers">Click the button to generate numbers</div>
+        <button class="button" onclick="generateLottoNumbers()">Generate Numbers</button>
+    </div>
+
+    <script>
+        function generateLottoNumbers() {
+            const mainNumbers = [];
+            while (mainNumbers.length < 6) {
+                let num = Math.floor(Math.random() * 38) + 1;
+                if (!mainNumbers.includes(num)) {
+                    mainNumbers.push(num);
+                }
+            }
+            mainNumbers.sort((a, b) => a - b);
+
+            let bonusBall;
+            do {
+                bonusBall = Math.floor(Math.random() * 38) + 1;
+            } while (mainNumbers.includes(bonusBall));
+
+            document.getElementById("lottoNumbers").innerHTML = 
+                "Lotto Numbers: " + mainNumbers.join(", ") + "<br>Bonus Ball: " + bonusBall;
+        }
+    </script>
+    
+   <div id="apple"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="grape"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+<div id="melon"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+<div id="mango"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+<div id="cane"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+<div id="pine"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Generator</title>
+    <style>
+    	    	#banana {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 90%;
+        left: 207%;
+        }
+            	    	#pineapple {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 115%;
+        left: 207%;
+        }
+        	    	#orange {
+    	background-color: red;
+        border: 2px solid black;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 140%;
+        left: 207%;
+        }
+        
+        	    	#guava {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 165%;
+        left: 207%;
+        }
+        	    	#cherry {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 190%;
+        left: 207%;
+        }
+        	    	#plum {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 215%;
+        left: 207%;
+        }
+            	    	#banana1 {
+    	background-color: red;
+        border: 2px solid black;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 90%;
+        left: 242%;
+        }
+            	    	#pineapple1 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 115%;
+        left: 242%;
+        }
+        	    	#orange1 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 140%;
+        left: 242%;
+        }
+        
+        	    	#guava1 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 165%;
+        left: 242%;
+        }
+        	    	#cherry1 {
+    	background-color: red;
+        border: 2px solid black;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 190%;
+        left: 242%;
+        }
+        	    	#plum1 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 215%;
+        left: 242%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+        .numbers {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00796b;
+            margin: 20px 0;
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cashpot Number Generator</h1>
+        <div class="numbers" id="generatedNumbers">Click the button to generate numbers</div>
+        <button class="button" onclick="generateNumbers()">Generate Numbers</button>
+    </div>
+
+    <script>
+        function generateNumbers() {
+            const numbers = [];
+            while (numbers.length < 6) {
+                let num = Math.floor(Math.random() * 36) + 1;
+                if (!numbers.includes(num)) {
+                    numbers.push(num);
+                }
+            }
+            numbers.sort((a, b) => a - b); // Optional: sort the numbers
+
+            document.getElementById("generatedNumbers").innerHTML = 
+                "Generated Numbers: " + numbers.join(", ");
+        }
+    </script>
+    
+      <div id="banana"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+      <div id="pineapple"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="orange"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="guava"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="cherry"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="plum"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+      <div id="banana1"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+      <div id="pineapple1"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="orange1"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="guava1"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="cherry1"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+   <div id="plum1"> <form>
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<input type="text" name="numbers" size="10px" value="">
+<center><input type="text" name="numbers" size="1%" value=""></center>
+</form></div>
+
+</body>
+</html>
