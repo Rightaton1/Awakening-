@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - Earn Money</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+            background: gold;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: lime;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Game - Earn Money</h1>
+        <p id="earnings">Earnings: $<span id="balance">0</span></p>
+        
+        <div id="quiz-container">
+            <p id="question">Loading question...</p>
+            <div id="answers"></div>
+        </div>
+
+        <button id="cashout" disabled>Cash Out</button>
+        <h3>CashOut Activation Request $1000</h3>
+    </div>
+
+    <script>
+        const questions = [
+            // Stage 1: General Knowledge
+            { question: "Level (1). General  Knowledge (10) Quiz (01) What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "Level (1). General  Knowledge (09) Quiz (02) What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Level (1). General  Knowledge (08) Quiz (03) Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "Level (1). General  Knowledge (07) Quiz (04) What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Level (1). General  Knowledge (06) Quiz (05) Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Level (1). General  Knowledge (05) Quiz (06) Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "Level (1). General  Knowledge (04) Quiz (07) What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "Level (1). General  Knowledge (03) Quiz (08) What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Level (1). General  Knowledge (02) Quiz (09) Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "Level (1). General  Knowledge (01) Quiz (10) What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 2: Science & Nature
+            { question: "Level (2). Science & Nature (10) Quiz (01). What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Level (2). Science & Nature (09) Quiz (02). Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "Level (2). Science & Nature (08) Quiz (03). What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "Level (2). Science & Nature (07) Quiz (04). How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "Level (2). Science & Nature (06) Quiz (05). What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Level (2). Science & Nature (05) Quiz (06). Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "Level (2). Science & Nature (04) Quiz (07). What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Level (2). Science & Nature (03) Quiz (08). Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "Level (2). Science & Nature (02) Quiz (09). What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Level (2). Science & Nature (01) Quiz (10). Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 3:  General Knowledge 
+            { question: "Level (3). General Knowledge (10) Quiz (01). What is 20 + 10?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "Level (3). General Knowledge (09) Quiz (02). What is the capital of Kingston in Jamaica?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "Level (3). General Knowledge (08) Quiz (03). What is the name of the author and creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "Level (3). General Knowledge (07) Quiz (04). Who is Jamaica first national hero?", answers: ["Nanny O T Maroons", "Sam Sharpe", "Paul Bogle", "Marcus Garvey", "Norman W Manley", "Sir A Bustamantie", "George W Gordon"], correct: "Marcus Garvey" },
+            { question: "Level (3). General Knowledge (06) Quiz (05). Who is the greatest reggae singer from Jamaica?", answers: ["Dennis Brown", "Garnett Silk", "Bob Marley", "Jimmy Cliff"], correct: "Bob Marley" },
+            { question: "Level (3). General Knowledge (05) Quiz (06). Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "Level (3). General Knowledge (04) Quiz (07). What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "Level (3). General Knowledge (03) Quiz (08). What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Level (3). General Knowledge (02) Quiz (09). Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "Level (3). General Knowledge (01) Quiz (10). What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 4: Science & Nature
+            { question: "Level (4). What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Level (4). Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "level (4). What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "Level (4). How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "Level (4). What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Level (4). Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "Level (4). What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Level (4). Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "Level (4). What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Level (4). Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 5: General Knowledge
+            { question: "Level (5). What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "Level (5). What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Level (5). Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "Level (5). What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Level (5). Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Level (5). Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "Level (5). What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "Level (5). What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Level (5). Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "Level (5). What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 6: Science & Nature
+            { question: "Level (6). What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Level (6). Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "Level (6). What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "Level (6). How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "Level (6). What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Level (6). Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "Level (6). What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Level (6). Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "Level (6). What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Level (6). Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 7:  General Knowledge 
+            { question: "Level (7). What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "Level (7). What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "Level (7). What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "Level (7). What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Level (7). Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Level (7). Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "Level (7). What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "Level (7). What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Level (7). Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "Level (7). What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 8: Science & Nature
+            { question: "Level (8). What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Level (8). Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "Level (8). What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "Level (8). How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "Level (8). What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Level (8). Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "Level (8). What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Level (8). Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "Level (8). What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Level (8). Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 9: General Knowledge
+            { question: "Level (9). What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "Level (9). What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Level (9). Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "Level (9). What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Level (9). Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Level (9). Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "Level (9). What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "Level (9). What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Level (9). Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "Level (9). What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 10: Science & Nature
+            { question: "Level (10). What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Level (10). Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "Level (10). What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "Level (10). How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "Level (10). What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Level (10). Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "Level (10). What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Level (10). Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "Level (10). What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Level (10). Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 11:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 12: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 13: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 14: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 15:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 16: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+            // Stage 17: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 18: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 19:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 20: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+            // Stage 21: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 22: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 23:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 24: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 25: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 26: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 27:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 28: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 29: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 30: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 31:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 32: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 33: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 34: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 35:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 36: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+            // Stage 37: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 38: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 39:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 40: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 41: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 42: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 43:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 44: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 45: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 46: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 47:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 48: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 49: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 50: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 51:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 52: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 53: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 54: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 55:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 56: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+            // Stage 57: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 58: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 59:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 60: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+            // Stage 61: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 62: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 63:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 64: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 65: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 66: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 67:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 68: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 69: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 70: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 71:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 72: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+           // Stage 73: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 74: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 75:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 76: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+            // Stage 77: General Knowledge
+            { question: "What is 2 + 2?", answers: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the capital of France?", answers: ["Berlin", "Madrid", "Paris", "Rome"], correct: "Paris" },
+            { question: "Which planet is known as the Red Planet?", answers: ["Earth", "Mars", "Jupiter", "Venus"], correct: "Mars" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 78: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // stage 79:  General Knowledge 
+            { question: "What is 10 + 20?", answers: ["30", "40", "50", "60"], correct: "30" },
+            { question: "What is the capital of Kingston?", answers: ["St Andrew", "PortRoyal", "Kingston", "Waterhouse", "Seaview gardens"], correct: "Kingston" },
+            { question: "What is the name of the creator of this game?", answers: ["Rohan Villiers", "Nadine Villiers", "Orville Tatham", "April Villiers", "Rolando Villiers"], correct: "Rohan Villiers" },
+            { question: "What is the square root of 64?", answers: ["6", "8", "10", "12"], correct: "8" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", answers: ["Harper Lee", "Mark Twain", "J.K. Rowling", "Ernest Hemingway"], correct: "Harper Lee" },
+            { question: "Which element has the chemical symbol 'O'?", answers: ["Gold", "Oxygen", "Osmium", "Hydrogen"], correct: "Oxygen" },
+            { question: "What is the largest ocean on Earth?", answers: ["Atlantic", "Pacific", "Indian", "Arctic"], correct: "Pacific" },
+            { question: "What is the capital of Japan?", answers: ["Beijing", "Seoul", "Tokyo", "Bangkok"], correct: "Tokyo" },
+            { question: "Who painted the Mona Lisa?", answers: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: "Leonardo da Vinci" },
+            { question: "What is the freezing point of water in Fahrenheit?", answers: ["0°F", "32°F", "100°F", "212°F"], correct: "32°F" },
+
+            // Stage 80: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // Stage 81: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+
+            // Stage 82: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // Stage 83: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            // Stage 84: Science & Nature
+            { question: "What is the chemical symbol for gold?", answers: ["Au", "Ag", "Go", "Fe"], correct: "Au" },
+            { question: "Which gas do plants absorb from the atmosphere?", answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: "Carbon Dioxide" },
+            { question: "What is the hardest natural substance on Earth?", answers: ["Gold", "Iron", "Diamond", "Quartz"], correct: "Diamond" },
+            { question: "How many bones are in the adult human body?", answers: ["200", "206", "215", "230"], correct: "206" },
+            { question: "What is the chemical formula for water?", answers: ["CO2", "H2O", "O2", "CH4"], correct: "H2O" },
+            { question: "Which blood type is known as the universal donor?", answers: ["A", "B", "O-negative", "AB"], correct: "O-negative" },
+            { question: "What part of the plant conducts photosynthesis?", answers: ["Roots", "Stem", "Leaves", "Flowers"], correct: "Leaves" },
+            { question: "Which planet is closest to the Sun?", answers: ["Venus", "Mars", "Mercury", "Earth"], correct: "Mercury" },
+            { question: "What is the powerhouse of the cell?", answers: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correct: "Mitochondria" },
+            { question: "Which vitamin is produced by the body when exposed to sunlight?", answers: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct: "Vitamin D" },
+            
+            
+            // More stages (3 to 10) can be added here...
+        ];
+
+        let balance = 0;
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                const questionData = questions[currentQuestionIndex];
+                document.getElementById("question").innerText = questionData.question;
+                
+                const answersContainer = document.getElementById("answers");
+                answersContainer.innerHTML = "";
+
+                questionData.answers.forEach(answer => {
+                    const btn = document.createElement("button");
+                    btn.innerText = answer;
+                    btn.onclick = () => checkAnswer(answer);
+                    answersContainer.appendChild(btn);
+                });
+            } else {
+                document.getElementById("quiz-container").innerHTML = "<h2>Quiz Complete! Keep playing for more earnings.</h2>";
+            }
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const questionData = questions[currentQuestionIndex];
+            
+            if (selectedAnswer === questionData.correct) {
+                balance += 10; // Earn $10 for a correct answer
+                document.getElementById("balance").innerText = balance;
+
+                if (balance >= 1000) {
+                    document.getElementById("cashout").disabled = false;
+                }
+            }
+
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        document.getElementById("cashout").onclick = function() {
+            alert("Cashout feature coming soon!");
+        };
+
+        loadQuestion();
+    </script>
+</body>
+</html>
