@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: gold;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        #score {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.1s;
+            position: relative;
+            overflow: hidden;
+        }
+        .button:active {
+            transform: scale(0.95);
+        }
+        .floating-text {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            font-weight: bold;
+            opacity: 1;
+            animation: floatUp 1s ease-out;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-30px); opacity: 0; }
+        }
+        .shop {
+            margin-top: 20px;
+        }
+        .shop button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .leaderboard {
+            margin-top: 20px;
+            padding: 10px;
+            background: #eee;
+            border-radius: 10px;
+        }
+        .theme-selector {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Clicker Game</h1>
+        <p>Click the button to earn points!</p>
+        <h2>Score: <span id="score">0</span></h2>
+        <button class="button" onclick="increaseScore(event)">Click Me!</button>
+
+        <div class="shop">
+            <h3>Upgrades & Power-ups</h3>
+            <button onclick="buyMultiplier()">Multiplier (Cost: <span id="multiplier-cost">10</span>)</button>
+            <button onclick="buyAutoClicker()">Auto Clicker (Cost: <span id="auto-clicker-cost">50</span>)</button>
+            <button onclick="activatePowerUp()">Double Points (Cost: <span id="power-up-cost">100</span>)</button>
+        </div>
+
+        <div class="leaderboard">
+            <h3>🏆 Leaderboard</h3>
+            <ol id="leaderboard"></ol>
+        </div>
+
+        <div id="achievements">
+            <h3>🏆 Achievements:</h3>
+            <ul id="achievement-list"></ul>
+        </div>
+
+        <div class="theme-selector">
+            <h3>🎨 Choose Theme:</h3>
+            <select id="theme" onchange="changeTheme()">
+                <option value="light">Light Theme</option>
+                <option value="dark">Dark Theme</option>
+                <option value="blue">Blue Theme</option>
+            </select>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="https://www.fesliyanstudios.com/play-mp3/4384" preload="auto"></audio>
+    <audio id="upgradeSound" src="https://www.fesliyanstudios.com/play-mp3/4385" preload="auto"></audio>
+
+    <script>
+        let score = 0;
+        let multiplier = 1;
+        let autoClicker = 0;
+        let multiplierCost = 10;
+        let autoClickerCost = 50;
+        let powerUpCost = 100;
+        let powerUpActive = false;
+
+        let achievements = [
+            { name: "First 100!", score: 100, unlocked: false },
+            { name: "Halfway There!", score: 500, unlocked: false },
+            { name: "Click Master!", score: 1000, unlocked: false }
+        ];
+
+        function increaseScore(event) {
+            playClickSound();
+            let points = powerUpActive ? multiplier * 2 : multiplier;
+            score += points;
+            updateScore();
+            showFloatingText(event, "+" + points);
+        }
+
+        function playClickSound() {
+            document.getElementById("clickSound").play();
+        }
+
+        function playUpgradeSound() {
+            document.getElementById("upgradeSound").play();
+        }
+
+        function buyMultiplier() {
+            if (score >= multiplierCost) {
+                score -= multiplierCost;
+                multiplier++;
+                multiplierCost *= 2;
+                playUpgradeSound();
+                updateScore();
+                document.getElementById("multiplier-cost").innerText = multiplierCost;
+            } else {
+                alert("Not enough points!");
+            }
+        }
+
+        function buyAutoClicker() {
+            if (score >= autoClickerCost) {
+                score -= autoClickerCost;
+                autoClicker++;
+                autoClickerCost *= 2;
+                playUpgradeSound();
+                updateScore();
+                document.getElementById("auto-clicker-cost").innerText = autoClickerCost;
+            } else {
+                alert("Not enough points!");
+            }
+        }
+
+        function activatePowerUp() {
+            if (score >= powerUpCost && !powerUpActive) {
+                score -= powerUpCost;
+                updateScore();
+                powerUpActive = true;
+                setTimeout(() => powerUpActive = false, 10000);
+            } else {
+                alert("Not enough points or already active!");
+            }
+        }
+
+        function updateScore() {
+            document.getElementById("score").innerText = score;
+            checkAchievements();
+            updateLeaderboard();
+        }
+
+        function checkAchievements() {
+            achievements.forEach(ach => {
+                if (!ach.unlocked && score >= ach.score) {
+                    ach.unlocked = true;
+                    showAchievement(ach.name);
+                    updateAchievements();
+                }
+            });
+        }
+
+        function showAchievement(name) {
+            alert("🎉 Achievement Unlocked: " + name);
+        }
+
+        function updateLeaderboard() {
+            let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+            leaderboard.push(score);
+            leaderboard = leaderboard.sort((a, b) => b - a).slice(0, 5);
+            localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+
+            let leaderboardList = document.getElementById("leaderboard");
+            leaderboardList.innerHTML = "";
+            leaderboard.forEach((s, index) => {
+                let li = document.createElement("li");
+                li.innerText = `#${index + 1}: ${s} Points`;
+                leaderboardList.appendChild(li);
+            });
+        }
+
+        function changeTheme() {
+            let theme = document.getElementById("theme").value;
+            document.body.className = theme + "-theme";
+            localStorage.setItem("theme", theme);
+        }
+
+        window.onload = function() {
+            changeTheme();
+        };
+
+        setInterval(() => {
+            if (autoClicker > 0) {
+                score += autoClicker;
+                updateScore();
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
