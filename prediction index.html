@@ -1,0 +1,747 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scheduled Number Display</title>
+  <style>
+  	body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: right;
+            align-items: right;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+        
+        #main > article {
+  flex: 1;
+  
+}
+#main > nav, 
+#main > aside {
+  flex: 0 0 21vw;
+  background: blue;
+}
+#main > nav {
+  order: -1;
+}
+
+        
+        	#sample {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 90px;
+        height: 20px;
+        top: 2%;
+        left: 5%;
+        }
+        
+        #sample1 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 90px;
+        height: 20px;
+        top: 2%;
+        left: 20%;
+        }
+        
+               	#sample2 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 93px;
+        height: 20px;
+        top: 2%;
+        left: 35%;
+        }
+        
+          #sample3 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 93px;
+        height: 20px;
+        top: 4%;
+        left: 5%;
+        }
+        
+              	#sample4 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 93px;
+        height: 20px;
+        top: 4%;
+        left: 20%;
+        }
+        
+        	#sample5 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 111px;
+        height: 20px;
+        top: 4%;
+        left: 35%;
+        }
+        
+            #sample6 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 130px;
+        height: 20px;
+        top: 6%;
+        left: 5%;
+        }
+        
+                	#sample7 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 130px;
+        height: 20px;
+        top: 6%;
+        left: 20%;
+        }
+        
+          	#sample8 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 163plx;
+        height: 20px;
+        top: 6%;
+        left: 35%;
+        }
+        
+        	    	#banana {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 10%;
+        left: 5%;
+        }
+            	    	#pineapple {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 10%;
+        left: 20%;
+        }
+        	    	#orange {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 10%;
+        left: 35%;
+        }
+        
+        	    	#guava {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 10%;
+        left: 50%;
+        }
+        	    	#cherry {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 20%;
+        left: 5%;
+        }
+        	    	#plum {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 20%;
+        left: 20%;
+        }
+            	    	#banana1 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 20%;
+        left: 35%;
+        }
+            	    	#pineapple1 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 20%;
+        left: 50%;
+        }
+        	    	#orange1 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 30%;
+        left: 5%;
+        }
+        
+        	    	#guava1 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 30%;
+        left: 20%;
+        }
+        	    	#cherry1 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 30%;
+        left: 35%;
+        }
+        	    	#plum1 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 30%;
+        left: 50%;
+        }
+        
+        	    	#banana2 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 40%;
+        left: 5%;
+        }
+            	    	#pineapple2 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 40%;
+        left: 20%;
+        }
+        	    	#orange2 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 40%;
+        left: 35%;
+        }
+        
+        	    	#guava2 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 40%;
+        left: 50%;
+        }
+        	    	#cherry2 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 50%;
+        left: 5%;
+        }
+        	    	#plum2 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 50%;
+        left: 20%;
+        }
+            	    	#banana3 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 50%;
+        left: 35%;
+        }
+            	    	#pineapple3 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 50%;
+        left: 50%;
+        }
+        	    	#orange3 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 60%;
+        left: 5%;
+        }
+        
+        	    	#guava3 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 60%;
+        left: 20%;
+        }
+        	    	#cherry3 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 60%;
+        left: 35%;
+        }
+        	    	#plum3 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 60%;
+        left: 50%;
+        }
+        
+        	    	#banana4 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 70%;
+        left: 5%;
+        }
+            	    	#pineapple4 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 70%;
+        left: 20%;
+        }
+        	    	#orange4 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 70%;
+        left: 35%;
+        }
+        
+        	    	#guava4 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 70%;
+        left: 50%;
+        }
+        	    	#cherry4 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 80%;
+        left: 5%;
+        }
+        	    	#plum4 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 80%;
+        left: 20%;
+        }
+            	    	#banana5 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 80%;
+        left: 35%;
+        }
+            	    	#pineapple5 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 80%;
+        left: 50%;
+        }
+        	    	#orange5 {
+    	background-color: red;
+        border: 2px solid lime;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 90%;
+        left: 5%;
+        }
+        
+        	    	#guava5 {
+    	background-color: gold;
+        border: 2px solid green;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 90%;
+        left: 20%;
+        }
+        	    	#cherry5 {
+    	background-color: green;
+        border: 2px solid gold;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 90%;
+        left: 35%;
+        }
+        	    	#plum5 {
+    	background-color: black;
+        border: 2px solid red;
+        position: Absolute;
+        width: 117px;
+        height: 150px;
+        top: 90%;
+        left: 50%;
+        }
+  </style>
+</head>
+<body>
+	
+	<div id="football-widget" style="max-width: 500px; margin: auto; font-family: Arial, sans-serif;">
+  <style>
+    #football-widget {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 12px;
+      background: #f4f4f4;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    select, button {
+      padding: 10px;
+      margin: 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 90%;
+    }
+    .predict-btn {
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .predict-btn:hover {
+      background: #218838;
+    }
+    #prediction-result {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #006400;
+    }
+  </style>
+
+  <h3>Predict a Football Match</h3>
+
+  <label for="teamA">Select Home Team A:</label><br>
+  <select id="teamA">
+    <optgroup label="Premier League $">
+      <option>StoreHouse Predict 100%</option>
+      <option>Aston Villa</option>
+      <option>Arsenal</option>
+      <option>Brighton</option>
+      <option>Brentford</option>
+      <option>Bournemouth</option>
+      <option>Chelsea</option>
+      <option>Crystal Palace</option>
+      <option>Ipswich Town</option>
+      <option>Liverpool</option>
+      <option>Leicester City</option>
+      <option>Man City</option>
+      <option>Man United</option>
+      <option>New Castle</option>
+      <option>Nottingham Forest</option>
+      <option>Southampton</option>
+      <option>Tottenham</option>
+      <option>Ipswich Town</option>
+      <option>West Ham</option>
+      <option>Wolves</option>
+    </optgroup>
+    <optgroup label="La Liga $">
+      <option>Alaves</option>
+      <option>Athletic Club</option>
+      <option>Athletico Madrid</option>
+      <option>Barcelona</option>
+      <option>Celta Vigo</option>
+      <option>Espanyol</option>
+      <option>Girona</option>
+      <option>Getafe</option>
+      <option>Leganes</option>
+      <option>Las Palmas</option>
+      <option>Mallorca</option>
+      <option>Osasuna</option>
+      <option>Real Betis</option>
+      <option>Real Madrid</option>
+      <option>Real Sociedad</option>
+      <option>Rayo Vallecano</option>
+      <option>Sevilla</option>
+      <option>Valencia</option>
+      <option>Villareal</option>
+      <option>Valladolid</option>
+    </optgroup>
+    <optgroup label="Serie A $">
+      <option>Atalanta</option>
+      <option>Bologna</option>
+      <option>Como</option>
+      <option>Cagliari</option>
+      <option>Empoli</option>
+      <option>Fiorentina</option>
+      <option>Genoa</option>
+      <option>Inter</option>
+      <option>Juventus</option>
+      <option>Lazio</option>
+      <option>Lecce</option>
+      <option>Milan</option>
+      <option>Monza</option>
+      <option>Napoli</option>
+      <option>Roma</option>
+      <option>Parna</option>
+      <option>Torino</option>
+      <option>Udinese</option>
+      <option>Verona</option>
+      <option>Venezia</option
+    </optgroup>
+    <optgroup label="Bundesliga $">
+            <option>Augsburg</option>
+      <option>Bayern Munich</option>
+      <option>Borussia Dortmund</option>
+      <option>Eintracht Frank</option>
+      <option>FC St. Pauli</option>
+      <option>Hoffenheim</option>
+     <option>Heidenheim</option>
+      <option>Holstein Kiel</option>
+      <option>Bayern Leverkusen</option>
+      <option>Mainz</option>
+      <option>Monchenglad Bag</option>
+      <option>RB Lleipzig</option>
+      <option>SC Freiburg</option>
+      <option>Union Berlin</option>
+      <option>VfL Bochum</option>
+      <option>VfB Stuttgart</option>
+      <option>Werder Burman</option>
+      <option>Wolfsburg</option>
+    </optgroup>
+    <optgroup label="Ligue 1 $">
+      <option>Angers</option>
+      <option>Auxerre</option>
+      <option>Brest</option>
+      <option>Lyon</option>
+      <option>Lens</option>
+      <option>LOSO</option>
+      <option>Le Havre</option>
+      <option>Monaco</option>
+      <option>Marseille</option>
+      <option>Montpellier</option>
+      <option>Nice</option>
+      <option>Nantes</option>
+      <option>PSG</option>
+      <option>Reims</option>
+      <option>Rennes</option>
+      <option>St- Etienne</option>
+      <option>Starsbourg</option>
+      <option>Toulouse</option>
+    </optgroup>
+  </select><br>
+
+  <label for="teamB">Select Away Team B:</label><br>
+  <select id="teamB">
+    <optgroup label="Premier League $">
+      <option>StoreHouse Predict 100%</option>
+      <option>Aston Villa</option>
+      <option>Arsenal</option>
+      <option>Brighton</option>
+      <option>Brentford</option>
+      <option>Bournemouth</option>
+      <option>Chelsea</option>
+      <option>Crystal Palace</option>
+      <option>Ipswich Town</option>
+      <option>Liverpool</option>
+      <option>Leicester City</option>
+      <option>Man City</option>
+      <option>Man United</option>
+      <option>New Castle</option>
+      <option>Nottingham Forest</option>
+      <option>Southampton</option>
+      <option>Tottenham</option>
+      <option>Ipswich Town</option>
+      <option>West Ham</option>
+      <option>Wolves</option>
+    </optgroup>
+    <optgroup label="La Liga $">
+      <option>Alaves</option>
+      <option>Athletic Club</option>
+      <option>Athletico Madrid</option>
+      <option>Barcelona</option>
+      <option>Celta Vigo</option>
+      <option>Espanyol</option>
+      <option>Girona</option>
+      <option>Getafe</option>
+      <option>Leganes</option>
+      <option>Las Palmas</option>
+      <option>Mallorca</option>
+      <option>Osasuna</option>
+      <option>Real Betis</option>
+      <option>Real Madrid</option>
+      <option>Real Sociedad</option>
+      <option>Rayo Vallecano</option>
+      <option>Sevilla</option>
+      <option>Valencia</option>
+      <option>Villareal</option>
+      <option>Valladolid</option>
+    </optgroup>
+    <optgroup label="Serie A $">
+     <option>Atalanta</option>
+      <option>Bologna</option>
+      <option>Como</option>
+      <option>Cagliari</option>
+      <option>Empoli</option>
+      <option>Fiorentina</option>
+      <option>Genoa</option>
+      <option>Inter Milanr</option>
+      <option>Juventus</option>
+      <option>Lazio</option>
+      <option>Lecce</option>
+      <option>AC Milan</option>
+      <option>Monza</option>
+      <option>Napoli</option>
+      <option>Roma</option>
+      <option>Parna</option>
+      <option>Torino</option>
+      <option>Udinese</option>
+      <option>Verona</option>
+      <option>Venezia</option
+    </optgroup>
+    <optgroup label="Bundesliga $">
+      <option>Augsburg</option>
+      <option>Bayern Munich</option>
+      <option>Borussia Dortmund</option>
+      <option>Eintracht Frank</option>
+      <option>FC St. Pauli</option>
+      <option>Hoffenheim</option>
+     <option>Heidenheim</option>
+      <option>Holstein Kiel</option>
+      <option>Bayern Leverkusen</option>
+      <option>Mainz</option>
+      <option>Monchenglad Bag</option>
+      <option>RB Lleipzig</option>
+      <option>SC Freiburg</option>
+      <option>Union Berlin</option>
+      <option>VfL Bochum</option>
+      <option>VfB Stuttgart</option>
+      <option>Werder Burman</option>
+      <option>Wolfsburg</option>
+    </optgroup>
+    <optgroup label="Ligue 1 $">
+      <option>Angers</option>
+      <option>Auxerre</option>
+      <option>Brest</option>
+      <option>Lyon</option>
+      <option>Lens</option>
+      <option>LOSO</option>
+      <option>Le Havre</option>
+      <option>Monaco</option>
+      <option>Marseille</option>
+      <option>Montpellier</option>
+      <option>Nice</option>
+      <option>Nantes</option>
+      <option>PSG</option>
+      <option>Reims</option>
+      <option>Rennes</option>
+      <option>St- Etienne</option>
+      <option>Starsbourg</option>
+      <option>Toulouse</option>
+    </optgroup>
+  </select><br>
+
+  <button class="predict-btn" onclick="makePrediction()">Predict Winner</button>
+
+  <div id="prediction-result"></div>
+
+  <script>
+    function makePrediction() {
+      const teamA = document.getElementById("teamA").value;
+      const teamB = document.getElementById("teamB").value;
+
+      if (teamA === teamB) {
+        document.getElementById("prediction-result").innerHTML = `<span style="color:red;">Please select two different teams.</span>`;
+        return;
+      }
+
+      const winChanceA = Math.floor(Math.random() * 100);
+      const winChanceB = 100 - winChanceA;
+      const predictedWinner = winChanceA > winChanceB ? teamA : teamB;
+
+      document.getElementById("prediction-result").innerHTML = `
+        Match: <b>${teamA}</b> vs <b>${teamB}</b><br>
+        Predicted Winner: <b>${predictedWinner}</b><br>
+        Win Chance: <b>${Math.max(winChanceA, winChanceB)}%</b>
+      `;
+    }
+  </script>
+  
+  |<a href="https://g.co/kgs/Y7h5pB9" target="_blank">Premier League Table</a>|<br />
+  |<a href="https://g.co/kgs/3yL7sRS" target="_blank">LaLiga Table</a>|<br />
+  |<a href="https://g.co/kgs/A1Kzwqo" target="_blank">Serie A Table</a>|<br />
+  |<a href="https://g.co/kgs/PhN4rV4" target="_blank">Bundesliga Table</a>|<br />
+  |<a href="https://g.co/kgs/gVt5EEz" target="_blank">Ligue 1  Table</a>|<br />
+</div>
+</body>
+</html>
