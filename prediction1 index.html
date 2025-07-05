@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Football Match Predictions - Advanced</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; background: #eef2f5; padding: 20px; }
+    h1 { text-align: center; margin-bottom: 20px; }
+    .match { background: #fff; max-width: 600px; margin: 15px auto; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .time, .countdown { font-size: 0.9em; color: #555; }
+    .teams { font-size: 1.3em; margin: 10px 0; }
+    .competition { color: #888; font-size: 0.85em; margin-bottom: 10px; }
+    .predictions { margin-top: 10px; }
+    input[type="number"] { width: 50px; padding: 5px; margin: 0 5px; border: 1px solid #ccc; border-radius: 5px; }
+    button { padding: 6px 12px; margin-top: 8px; border: none; background: #28a745; color: white; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #218838; }
+    .result { margin-top: 8px; font-weight: bold; }
+    img.logo { height: 20px; vertical-align: middle; margin-right: 5px; }
+  </style>
+</head>
+<body><h1>⚽ Football Match Predictions</h1><div id="matches"></div>
+<audio id="notifySound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio><script>
+const matches = [
+  { competition: "UEFA Champions League", homeTeam: "Real Madrid", awayTeam: "Manchester City", time: "2025-06-20T20:00:00" },
+  { competition: "Premier League", homeTeam: "Arsenal", awayTeam: "Liverpool", time: "2025-06-20T18:30:00" },
+  { competition: "La Liga", homeTeam: "Barcelona", awayTeam: "Atletico Madrid", time: "2025-06-20T21:00:00" },
+  { competition: "Bundesliga", homeTeam: "Bayern Munich", awayTeam: "Borussia Dortmund", time: "2025-06-20T19:30:00" },
+  { competition: "Serie A", homeTeam: "Juventus", awayTeam: "AC Milan", time: "2025-06-20T20:45:00" }
+];
+
+const container = document.getElementById('matches');
+const notifySound = document.getElementById('notifySound');
+
+matches.forEach((match, index) => {
+  const kickoff = new Date(match.time);
+  const homeLogo = `https://via.placeholder.com/20x20?text=${match.homeTeam.charAt(0)}`;
+  const awayLogo = `https://via.placeholder.com/20x20?text=${match.awayTeam.charAt(0)}`;
+  const randomHome = Math.floor(Math.random() * 5);
+  const randomAway = Math.floor(Math.random() * 5);
+
+  const html = `
+    <div class="match">
+      <div class="time">Kick-off: ${kickoff.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+      <div class="countdown" id="countdown${index}"></div>
+      <div class="teams">
+        <img src="${homeLogo}" class="logo"> ${match.homeTeam} vs 
+        <img src="${awayLogo}" class="logo"> ${match.awayTeam}
+      </div>
+      <div class="competition">${match.competition}</div>
+      <div class="predictions">
+        <label>Predict Score: </label>
+        <input type="number" id="home${index}" min="0" value="${randomHome}" placeholder="Home"> -
+        <input type="number" id="away${index}" min="0" value="${randomAway}" placeholder="Away">
+        <br>
+        <button onclick="submitPrediction(${index})">Submit Prediction</button>
+        <div class="result" id="result${index}"></div>
+      </div>
+    </div>
+  `;
+  container.innerHTML += html;
+
+  updateCountdown(index, kickoff);
+  setInterval(() => updateCountdown(index, kickoff), 1000);
+});
+
+function updateCountdown(index, kickoff) {
+  const now = new Date();
+  const diff = kickoff - now;
+  const countdown = document.getElementById(`countdown${index}`);
+
+  if (diff <= 0) {
+    countdown.innerHTML = "Match Started";
+    notify(`Match Started: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
+  } else {
+    const minutes = Math.floor(diff / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+    countdown.innerHTML = `Starts in: ${minutes}m ${seconds}s`;
+
+    if (minutes === 10 && seconds === 0) {
+      notify(`10-minute reminder: ${matches[index].homeTeam} vs ${matches[index].awayTeam} starts soon!`);
+    }
+    if (minutes === -45 && seconds === 0) {
+      notify(`Halftime for: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
+    }
+    if (minutes === -90 && seconds === 0) {
+      notify(`Fulltime for: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
+    }
+  }
+}
+
+function submitPrediction(index) {
+  const homeScore = document.getElementById(`home${index}`).value;
+  const awayScore = document.getElementById(`away${index}`).value;
+  const resultDiv = document.getElementById(`result${index}`);
+
+  if (homeScore === "" || awayScore === "") {
+    resultDiv.innerHTML = "<span style='color: red;'>Please enter both scores.</span>";
+    return;
+  }
+
+  localStorage.setItem(`prediction${index}`, `${homeScore}-${awayScore}`);
+  resultDiv.innerHTML = `Your Prediction: ${homeScore} - ${awayScore} (saved)`;
+}
+
+function notify(message) {
+  if (Notification.permission === "granted") {
+    new Notification(message);
+    notifySound.play();
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        new Notification(message);
+        notifySound.play();
+      }
+    });
+  }
+}
+</script></body>
+</html>
