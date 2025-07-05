@@ -1,24 +1,24 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Football Match Predictions - Advanced</title>
+  <title>Football Prediction Widget</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: Arial, sans-serif; background: #eef2f5; padding: 20px; }
-    h1 { text-align: center; margin-bottom: 20px; }
-    .match { background: #fff; max-width: 600px; margin: 15px auto; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .time, .countdown { font-size: 0.9em; color: #555; }
-    .teams { font-size: 1.3em; margin: 10px 0; }
-    .competition { color: #888; font-size: 0.85em; margin-bottom: 10px; }
-    .predictions { margin-top: 10px; }
-    input[type="number"] { width: 50px; padding: 5px; margin: 0 5px; border: 1px solid #ccc; border-radius: 5px; }
-    button { padding: 6px 12px; margin-top: 8px; border: none; background: #28a745; color: white; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #218838; }
-    .result { margin-top: 8px; font-weight: bold; }
-    img.logo { height: 20px; vertical-align: middle; margin-right: 5px; }
+    body { font-family: Arial, sans-serif; background: #fff; padding: 10px; margin: 0; }
+    h2 { text-align: center; margin-bottom: 10px; font-size: 1.2em; }
+    .match { background: #f9f9f9; margin: 10px 0; padding: 10px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .time, .countdown { font-size: 0.85em; color: #333; }
+    .teams { font-size: 1.1em; margin: 8px 0; }
+    .competition { color: #777; font-size: 0.8em; margin-bottom: 8px; }
+    .predictions { margin-top: 6px; }
+    input[type="number"] { width: 40px; padding: 3px; margin: 0 3px; border: 1px solid #ccc; border-radius: 4px; }
+    button { padding: 4px 8px; margin-top: 6px; border: none; background: #007bff; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85em; }
+    button:hover { background: #0056b3; }
+    .result { margin-top: 6px; font-weight: bold; color: green; font-size: 0.85em; }
+    img.logo { height: 16px; vertical-align: middle; margin-right: 4px; }
   </style>
 </head>
-<body><h1>⚽ Football Match Predictions</h1><div id="matches"></div>
+<body><h2>⚽ Today's Football Predictions</h2><div id="matches"></div>
 <audio id="notifySound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio><script>
 const matches = [
   { competition: "UEFA Champions League", homeTeam: "Real Madrid", awayTeam: "Manchester City", time: "2025-06-20T20:00:00" },
@@ -33,13 +33,14 @@ const notifySound = document.getElementById('notifySound');
 
 matches.forEach((match, index) => {
   const kickoff = new Date(match.time);
-  const homeLogo = `https://via.placeholder.com/20x20?text=${match.homeTeam.charAt(0)}`;
-  const awayLogo = `https://via.placeholder.com/20x20?text=${match.awayTeam.charAt(0)}`;
+  const homeLogo = `https://via.placeholder.com/16x16?text=${match.homeTeam.charAt(0)}`;
+  const awayLogo = `https://via.placeholder.com/16x16?text=${match.awayTeam.charAt(0)}`;
   const randomHome = Math.floor(Math.random() * 5);
   const randomAway = Math.floor(Math.random() * 5);
 
-  const html = `
-    <div class="match">
+  const div = document.createElement('div');
+  div.className = 'match';
+  div.innerHTML = `
       <div class="time">Kick-off: ${kickoff.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
       <div class="countdown" id="countdown${index}"></div>
       <div class="teams">
@@ -48,19 +49,26 @@ matches.forEach((match, index) => {
       </div>
       <div class="competition">${match.competition}</div>
       <div class="predictions">
-        <label>Predict Score: </label>
-        <input type="number" id="home${index}" min="0" value="${randomHome}" placeholder="Home"> -
-        <input type="number" id="away${index}" min="0" value="${randomAway}" placeholder="Away">
+        <label>Predict: </label>
+        <input type="number" id="home${index}" min="0" value="${randomHome}"> -
+        <input type="number" id="away${index}" min="0" value="${randomAway}">
         <br>
-        <button onclick="submitPrediction(${index})">Submit Prediction</button>
+        <button onclick="submitPrediction(${index})">Submit</button>
         <div class="result" id="result${index}"></div>
       </div>
-    </div>
   `;
-  container.innerHTML += html;
+  container.appendChild(div);
 
   updateCountdown(index, kickoff);
   setInterval(() => updateCountdown(index, kickoff), 1000);
+
+  const saved = localStorage.getItem(`prediction${index}`);
+  if (saved) {
+    const [savedHome, savedAway] = saved.split("-");
+    document.getElementById(`home${index}`).value = savedHome;
+    document.getElementById(`away${index}`).value = savedAway;
+    document.getElementById(`result${index}`).innerText = `Prediction Saved: ${savedHome} - ${savedAway}`;
+  }
 });
 
 function updateCountdown(index, kickoff) {
@@ -70,21 +78,15 @@ function updateCountdown(index, kickoff) {
 
   if (diff <= 0) {
     countdown.innerHTML = "Match Started";
-    notify(`Match Started: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
+    notify(`${matches[index].homeTeam} vs ${matches[index].awayTeam} Started`);
   } else {
     const minutes = Math.floor(diff / 60000);
     const seconds = Math.floor((diff % 60000) / 1000);
     countdown.innerHTML = `Starts in: ${minutes}m ${seconds}s`;
 
-    if (minutes === 10 && seconds === 0) {
-      notify(`10-minute reminder: ${matches[index].homeTeam} vs ${matches[index].awayTeam} starts soon!`);
-    }
-    if (minutes === -45 && seconds === 0) {
-      notify(`Halftime for: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
-    }
-    if (minutes === -90 && seconds === 0) {
-      notify(`Fulltime for: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
-    }
+    if (minutes === 10 && seconds === 0) notify(`10-minute Reminder: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
+    if (minutes === -45 && seconds === 0) notify(`Halftime: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
+    if (minutes === -90 && seconds === 0) notify(`Fulltime: ${matches[index].homeTeam} vs ${matches[index].awayTeam}`);
   }
 }
 
@@ -94,12 +96,12 @@ function submitPrediction(index) {
   const resultDiv = document.getElementById(`result${index}`);
 
   if (homeScore === "" || awayScore === "") {
-    resultDiv.innerHTML = "<span style='color: red;'>Please enter both scores.</span>";
+    resultDiv.innerHTML = "<span style='color:red'>Enter both scores</span>";
     return;
   }
 
   localStorage.setItem(`prediction${index}`, `${homeScore}-${awayScore}`);
-  resultDiv.innerHTML = `Your Prediction: ${homeScore} - ${awayScore} (saved)`;
+  resultDiv.innerHTML = `Prediction Saved: ${homeScore} - ${awayScore}`;
 }
 
 function notify(message) {
@@ -116,4 +118,6 @@ function notify(message) {
   }
 }
 </script></body>
-</html>
+</html><!-- EMBED THIS WITH:
+<iframe src="YOUR-WIDGET-URL.html" width="100%" height="500" frameborder="0"></iframe>
+-->
