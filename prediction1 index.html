@@ -70,4 +70,103 @@ matches.forEach(match => {
 </script>
 
 </body>
-</html>
+</html><br/><hr/>
+
+<div id="football-score-widget" style="max-width: 500px; margin: auto; font-family: Arial, sans-serif;">
+  <style>
+    #football-score-widget {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 12px;
+      background: #f4f4f4;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    select, button {
+      padding: 10px;
+      margin: 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 80%;
+    }
+    .predict-btn {
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .predict-btn:hover {
+      background: #0056b3;
+    }
+    #prediction-result {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+
+  <h3>Football Exact Score Prediction</h3>
+
+  <label for="teamA">Select Team A:</label><br>
+  <select id="teamA">
+    <option value="" disabled selected>Select Team</option>
+    <option>Manchester United</option>
+    <option>Manchester City</option>
+    <option>Real Madrid</option>
+    <option>Barcelona</option>
+    <option>PSG</option>
+    <option>Bayern Munich</option>
+    <option>Liverpool</option>
+    <option>Chelsea</option>
+    <option>Juventus</option>
+    <option>AC Milan</option>
+  </select><br>
+
+  <label for="teamB">Select Team B:</label><br>
+  <select id="teamB">
+    <option value="" disabled selected>Select Team</option>
+    <option>Manchester United</option>
+    <option>Manchester City</option>
+    <option>Real Madrid</option>
+    <option>Barcelona</option>
+    <option>PSG</option>
+    <option>Bayern Munich</option>
+    <option>Liverpool</option>
+    <option>Chelsea</option>
+    <option>Juventus</option>
+    <option>AC Milan</option>
+  </select><br>
+
+  <button class="predict-btn" onclick="predictExactScore()">Predict Exact Score</button>
+
+  <div id="prediction-result"></div>
+
+  <script>
+    function predictExactScore() {
+      const teamA = document.getElementById("teamA").value;
+      const teamB = document.getElementById("teamB").value;
+
+      if (!teamA || !teamB || teamA === teamB) {
+        document.getElementById("prediction-result").innerHTML = "<span style='color:red;'>Please select two different teams.</span>";
+        return;
+      }
+
+      // Generate random scores (0 to 5)
+      const scoreA = Math.floor(Math.random() * 6);
+      const scoreB = Math.floor(Math.random() * 6);
+
+      let resultText = `<b>${teamA}</b> ${scoreA} - ${scoreB} <b>${teamB}</b><br>`;
+
+      if (scoreA > scoreB) {
+        resultText += `<b>${teamA}</b> is predicted to win!`;
+      } else if (scoreB > scoreA) {
+        resultText += `<b>${teamB}</b> is predicted to win!`;
+      } else {
+        resultText += "It's predicted to be a draw!";
+      }
+
+      document.getElementById("prediction-result").innerHTML = resultText;
+    }
+  </script>
+</div><br /><hr />
