@@ -1,3 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Automated Slideshow Video Generator</title>
+  <style>
+    /* Container for the slideshow */
+    #slideshow {
+      position: relative;
+      width: 800px; /* Adjust size as needed */
+      height: 450px; /* 16:9 aspect ratio */
+      margin: 0 auto;
+      overflow: hidden;
+      background: #000;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Each slide */
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    /* Active slide */
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+ <div id="slideshow">
+    <div class="slide active" style="background-image: url('https://picsum.photos/id/1018/800/450');"></div>
+    <div class="slide" style="background-image: url('https://picsum.photos/id/1025/800/450');"></div>
+    <div class="slide" style="background-image: url('https://picsum.photos/id/1035/800/450');"></div>
+    <div class="slide" style="background-image: url('https://picsum.photos/id/1043/800/450');"></div>
+  </div>
+
+  <script>
+    // JavaScript to automate the slideshow
+    const slides = document.querySelectorAll('#slideshow .slide');
+    let currentIndex = 0;
+    const slideInterval = 3000; // 3 seconds
+
+    setInterval(() => {
+      // Remove active class from current slide
+      slides[currentIndex].classList.remove('active');
+
+      // Move to next slide
+      currentIndex = (currentIndex + 1) % slides.length;
+
+      // Add active class to new slide
+      slides[currentIndex].classList.add('active');
+    }, slideInterval);
+  </script>
+  
 <iframe 
   src="https://rangaton1.formaloo.co/sfti8d" 
   width="100%" 
@@ -76,3 +142,6 @@
         
             <iframe src="" 
         width="100%" height="600" style="border:none;"></iframe><br /><hr />
+  
+</body>
+</html>
