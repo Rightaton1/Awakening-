@@ -12,6 +12,15 @@
     .time { font-size: 0.9em; color: red; }
     .teams { font-size: 1.2em; margin: 10px 0; }
     .competition { color: gold; font-size: 0.85em; }
+
+    $(document).ready(function() {
+    $('#widgetCountries').widgetCountries({
+        widgetLeagueLocation: '#widgetLeague',
+        widgetLiveScoreLocation: '#widgetLiveScore'
+        widgetWidth: '19%',
+        preferentialLeagues: ['8634', '590']
+    });
+});
   </style>
 </head>
 <body>
@@ -20,10 +29,6 @@
 <iframe width="300" height="315" src="https://open.spotify.com/embed/playlist/1emyN2nW6EQfCR6lzSM0C6?si=sLA3cr1GRHmWHc6uoANExw&pt=85c2f5d1f86ea9d32a4c76c0d688e6af" frameborder="0"  allowfullscreen></iframe><hr />
 <div id="matches"></div>
 
-  <div class="fwp-embed" data-url="premier-league/fixtures-results"></div>
-<script src="https://www.footballwebpages.co.uk/embed.js" defer></script>
-
-  <iframe frameborder="0"  scrolling="no" width="520" height="700" src="https://www.fctables.com/fifa-club-world-cup/iframe/?type=table&lang_id=2&country=67&template=1444&team=&timezone=America/Jamaica&time=24&po=1&ma=1&wi=1&dr=1&los=1&gf=1&ga=1&gd=1&pts=1&ng=1&form=1&width=520&height=700&font=Verdana&fs=12&lh=22&bg=FFFFFF&fc=333333&tlink=1&ths=1&thb=1&thba=FFFFFF&thc=000000&bc=dddddd&hob=f5f5f5&hobc=ebe7e7&lc=333333&sh=1&hfb=1&hbc=3bafda&hfc=FFFFFF"></iframe><div style="text-align:center;"></div><a href="https://www.fctables.com/fifa-club-world-cup/" rel="nofollow">FcTables.com</a>
 </body>
 </html><br/><hr/>
 
