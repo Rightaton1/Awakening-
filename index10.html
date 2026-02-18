@@ -1,0 +1,1325 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MoneyMagnet 144</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card: #0b1220;
+      --muted: #9aa4b2;
+      --accent: #06b6d4;
+      --glass: rgba(255,255,255,0.03);
+      --radius: 14px;
+      --max-width: 1200px;
+      --transition: 240ms cubic-bezier(.2,.9,.3,1);
+      color-scheme: dark;
+    }
+    [data-theme='light']{
+      --bg: #f7fafc;
+      --card: #ffffff;
+      --muted: #51606a;
+      --accent: #0ea5a4;
+      --glass: rgba(2,6,23,0.04);
+      color-scheme: light;
+    }*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background:linear-gradient(180deg,var(--bg), rgba(0,0,0,0.02));
+  color: #e6eef6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+}
+
+/* Container */
+.container{max-width:var(--max-width);margin:0 auto;padding:1rem}
+
+/* Header / Nav */
+header{backdrop-filter: blur(6px);background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);position:sticky;top:0;z-index:60}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0}
+.brand{display:flex;align-items:center;gap:0.6rem}
+.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+.brand h1{font-size:1.05rem;margin:0}
+nav .links{display:flex;gap:0.6rem;align-items:center}
+nav a{color:var(--muted);text-decoration:none;padding:0.6rem;border-radius:8px;transition:var(--transition)}
+nav a:hover{color:var(--card);background:var(--accent);transform:translateY(-2px)}
+
+/* Hamburger for mobile */
+.hamburger{display:none;border:none;background:none;padding:8px;border-radius:8px}
+.hamburger svg{display:block}
+
+/* Hero */
+.hero{padding:3.6rem 0;display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:center}
+.hero-left h2{font-size:2rem;margin-bottom:0.5rem}
+.hero-left p{color:var(--muted);margin-bottom:1rem}
+.cta-row{display:flex;gap:0.7rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:0.6rem;padding:0.85rem 1.1rem;border-radius:12px;border:none;cursor:pointer;font-weight:600;transition:var(--transition)}
+.btn-primary{background:var(--accent);color:var(--card)}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+/* Card */
+.card{background:var(--card);padding:1.2rem;border-radius:var(--radius);box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+
+/* Features grid */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
+.feature h3{margin:0 0 0.4rem 0}
+.feature p{color:var(--muted);font-size:0.95rem}
+
+/* Services/ About */
+section{padding:2rem 0}
+
+/* Gallery */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.gallery-grid img{width:100%;height:160px;object-fit:cover;border-radius:10px;cursor:pointer;transition:transform var(--transition)}
+.gallery-grid img:hover{transform:scale(1.03)}
+
+/* Contact form */
+form{display:grid;gap:0.6rem}
+.input,textarea{width:100%;padding:0.75rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+textarea{min-height:120px;resize:vertical}
+
+/* Footer */
+footer{padding:2rem 0;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02);margin-top:2rem}
+
+/* Modal (login/signup and gallery) */
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity 180ms}
+.modal{width:100%;max-width:480px;padding:1.2rem;border-radius:12px;background:var(--card)}
+.modal.show{opacity:1;pointer-events:auto}
+
+/* small screens */
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;}
+  .features{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:680px){
+  nav .links{display:none}
+  .hamburger{display:inline-block}
+  .features{grid-template-columns:1fr}
+}
+
+/* small micro animations */
+.fade-in{opacity:0;transform:translateY(8px);transition:opacity 420ms var(--transition), transform 420ms var(--transition)}
+.fade-in.show{opacity:1;transform:none}
+
+/* Utility */
+.muted{color:var(--muted)}
+.row{display:flex;gap:1rem;align-items:center}
+.pill{padding:6px 10px;border-radius:999px;background:var(--glass);font-size:0.85rem}
+
+/* Dark-mode friendly form validation */
+input:invalid, textarea:invalid{box-shadow:0 0 0 3px rgba(255,0,50,0.06)}
+    
+        #rohan {
+	position: absolute;
+	top: 60%;
+	left: 82%;
+	}
+	
+	       #cane {
+	position: absolute;
+	background-color: blue;
+    border: 3px solid purple;
+	top: 11%;
+	left: 101%;
+	}
+	
+        	#apple {
+    	background-color: red;
+        border: 2px solid black;
+        }
+
+	#apple2 {
+    	background-color: green;
+        border: 2px solid gold;
+        }
+
+	#apple3 {
+    	background-color: black;
+        border: 2px solid red;
+        }
+
+	#apple4 {
+    	background-color: red;
+        border: 2px solid black;
+        }
+        
+        	#apple5 {
+    	background-color: red;
+        border: 2px solid black;
+        }
+        
+        	#apple6 {
+    	background-color: gold;
+        border: 2px solid green;
+        }
+
+	#apple7 {
+    	background-color: green;
+        border: 2px solid gold;
+        }
+
+
+	#apple8 {
+    	background-color: black;
+        border: 2px solid red;
+        }
+        
+        #apple10 {
+    	background-color: black;
+        border: 2px solid red;
+        }
+        
+        #apple11 {
+    	background-color: green;
+        border: 2px solid gold;
+        }
+        
+        #apple12 {
+    	background-color: gold;
+        border: 2px solid green;
+        }
+        
+        #apple13 {
+    	background-color: red;
+        border: 2px solid black;
+        }
+
+
+
+h1 {
+background: blue;
+color: white;
+}
+
+h2 {
+background-color: blue;
+color: white;
+}
+
+h3 {
+background-color: aqua;
+color: black;
+}
+
+a:link {
+color: white;
+background-color: blue;
+}
+a: visited: {
+background: lightgrey;
+{
+a:focus: {
+border: 2px solid red;
+background: lime;
+}
+a:hover {
+border: 2px solid blue;
+background: purple;
+color: white;
+}
+a:active {
+text-decoration: underline;
+border: 2px yellow;
+background: gold;
+color: Orange;
+}
+
+  </style>
+</head>
+<body>      
+  <div id="app" data-theme="dark">
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <div class="logo">MM<br />144</div>
+          <div>
+            <h1 style="font-size:1rem;margin:0">MoneyMagnet144</h1>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">By•Rohan•A•Villiers•</div>
+          </div>
+        </div><nav>
+      <div class="links" aria-label="Primary">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+        <a href="https://linkfly.to/80124ppS5YP" target="_blank">Business.</a>
+      </div>
+
+      <div class="row">
+        <button class="pill" id="themeToggle" aria-pressed="false" title="Toggle dark/light mode">Toggle Theme</button>
+        <button class="btn btn-ghost" id="openLogin">Login</button>
+        <button class="hamburger" id="menuBtn" aria-label="Toggle menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+  <div id="mobileMenu" style="display:none;background:var(--card);padding:8px 1rem;">
+    <div style="display:flex;flex-direction:column;gap:8px;max-width:var(--max-width);margin:0 auto">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+      <a href="https://linkfly.to/80124ppS5YP" target="_blank">Business</a>
+    </div>
+  </div>
+</header>
+
+<marquee><h3>MoneyMagnet144</h3></marquee>
+
+<div id="cane"><p>
+ <enter> <img src="https://d1yei2z3i6k35z.cloudfront.net/7352182/697053d857f70_e7f1ee78-bfe9-4185-b953-9fd6156eacca-copied-media2.png" style="float: right; width: 170px; height: 120px;" /></center>
+ </p></div>
+  
+<main>
+  <!-- HERO -->
+  <section id="home" class="container hero">
+    <div class="hero-left">
+    <center><h2 class="fade-in" style="font-size:2rem">Professional Business Center.<center>(MMPBC).</center><br /><a href="https://linktr.ee/Moneymagnet144" target="_blank">Free Gift.</a> </h2></center>
+    <p class="fade-in muted">Internet Marketing,  Finance, Shop, Store,<br /> Crypto Currency, Trading, Coinbase,<br /> Education & Traning. etc.<br /></p>
+      <div class="cta-row" style="margin-top:1rem">
+        <button class="btn btn-primary" onclick="scrollToSection('contact')">Get in touch</button>
+        <button class="btn btn-ghost" onclick="openSignup()">Email/Message</button> 
+ <form
+  action="https://formspree.io/f/xojvgpgo" 
+ method="POST">
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+  <button type="reset">RESET</button>
+</form>
+    
+     <div id="rohan"><form action="https://www.cnbctv18.com/live-tv/" target="demo1">
+   <iframe name="demo1" height="343" width="250" align="right"></iframe>
+   <input type="Submit" />
+    </form><hr />
+  </div>
+
+	   
+  <div class="main">
+
+</div>
+
+      </div>
+      <div class="features" style="margin-top:1.2rem">
+        <div class="feature card">
+        <center><marquee behavior="alternate"><h1>(MMPBC) MoneyMagnet (PBC)</h1></marquee></center>
+          <center><h3>(MMPBC) Professional Business Model</h3></center>
+          <p class="muted">5 common business models, with quick explanations:</p><hr />
+          <center><marquee behavior="alternate"><h1>(MMPBC) MoneyMagnet (PBC)</h1></marquee></center><hr />
+          <p class="muted"> 1. Subscription Model<br />
+Customers pay a recurring fee (monthly/annually) for continued access.<br />
+Examples: Netflix, Spotify, SaaS tools.</p>
+
+<select id="apple">
+<center><option value="1.Subscription-Based Digital Services">1. Subscription-Based Digital Services</option></center>
+<option value="Why it works: Predictable income, scalable online.
+Caribbean-friendly ideas:">Why it works: Predictable income, scalable online.
+Caribbean-friendly ideas:</option>
+<option value="Online fitness programs (dancehall fitness, Caribbean-style workouts)">Online fitness programs (dancehall fitness, Caribbean-style workouts)</option>
+<option value="E-learning platforms (Caribbean history, music, language, exam prep)">E-learning platforms (Caribbean history, music, language, exam prep)</option>
+<option value="Business tools for SMEs (invoicing, HR, booking systems)">Business tools for SMEs (invoicing, HR, booking systems)</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+          <p class="muted"> 2. Marketplace Model<br />
+The platform connects buyers and sellers and takes a commission.<br />
+Examples: Airbnb, Uber, Etsy.</p>
+
+<select id="apple1">
+<center><option value="2. Marketplace for Local Talent or Products">2. Marketplace for Local Talent or Products</option></center>
+<option value="Why it works: Leverages local strengths while earning commissions.
+Caribbean ideas:">Why it works: Leverages local strengths while earning commissions.
+Caribbean ideas:</option>
+<option value="Marketplace for Caribbean freelancers (designers, musicians, virtual assistants)">Marketplace for Caribbean freelancers (designers, musicians, virtual assistants)</option>
+<option value="Online platform for local crafts, fashion, spices, or beauty products">Online platform for local crafts, fashion, spices, or beauty products</option>
+<option value="Tourism-related marketplaces (local tour guides, experiences)">Tourism-related marketplaces (local tour guides, experiences)</option>
+<option value="Revenue: Commission per transaction or seller subscriptions.">Revenue: Commission per transaction or seller subscriptions.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+          <p class="muted">3. Freemium Model<br />
+Basic product is free; users pay for premium features.<br />
+Examples: Zoom, Dropbox, mobile apps.</p>
+
+<select id="apple2">
+<center><option value="3. Freemium Mobile or Web App">3. Freemium Mobile or Web App</option></center>
+<option value="Why it works: Low barrier to entry, great for growth.
+Caribbean ideas:">Why it works: Low barrier to entry, great for growth.
+Caribbean ideas:</option>
+<option value="Budgeting or money-management apps tailored to Caribbean currencies">Budgeting or money-management apps tailored to Caribbean currencies</option>
+<option value="Event discovery apps (parties, festivals, concerts)">Event discovery apps (parties, festivals, concerts)</option>
+<option value="Education or exam-prep apps">Education or exam-prep apps</option>
+<option value="Monetization: Premium features, ads, or in-app purchases.">Monetization: Premium features, ads, or in-app purchases.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+          <p class="muted">4. Direct-to-Consumer (DTC)<br />
+Businesses sell directly to customers without intermediaries.<br />
+Examples: Online clothing brands, skincare brands.</p>
+
+<select id="apple3">
+<center><option value="4. Direct-to-Consumer (DTC) E‑commerce Brand">4. Direct-to-Consumer (DTC) E‑commerce Brand</option></center>
+<option value="Why it works: Full control of branding and margins.
+Caribbean product ideas:
+">Why it works: Full control of branding and margins.
+Caribbean product ideas:
+</option>
+<option value="Natural skincare, haircare, or wellness products">Natural skincare, haircare, or wellness products</option>
+<option value="Caribbean-inspired fashion or accessories">Caribbean-inspired fashion or accessories</option>
+<option value="Coffee, rum-related merchandise (non-alcoholic online sales), spices">Coffee, rum-related merchandise (non-alcoholic online sales), spices</option>
+<option value="International advantage: “Made in the Caribbean” is a strong brand story.">International advantage: “Made in the Caribbean” is a strong brand story.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+          <p class="muted">5. Advertising-Based Model<br />
+The product is free for users; revenue comes from ads.<br />
+Examples: Google, Facebook, YouTube.</p>
+
+<select id="apple4">
+<center><option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option></center>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<center><marquee behavior="alternate"><h1>(MMPBC) MoneyMagnet (PBC)</h1></marquee></center><hr />
+
+<p class="muted">practical next steps you can follow to move from idea to action,<br /> whether you’re targeting the Caribbean or international markets 🚀</p><hr />
+
+<center><marquee behavior="alternate"><h1>(MMPBC) MoneyMagnet (PBC)</h1></marquee></center><hr />
+
+<p class="muted">STEP 1: Choose ONE Business Model (Don’t Skip This)<br />
+
+From the 5 models we discussed, pick one to start with:<br />
+
+Subscription<br />
+
+Marketplace<br />
+
+Freemium app<br />
+
+DTC e‑commerce<br />
+
+Content + digital products<br />
+
+
+👉 Rule: Don’t mix models yet. Focus on one.
+</p>
+
+<select id="apple5">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 2: Match the Model to You<br />
+
+Answer these quickly (even just in your head):<br />
+
+What skills do I already have?<br />
+
+Do I prefer selling products, services, or content?<br />
+
+Do I want fast cashflow or long-term growth?<br />
+
+
+Examples:<br />
+
+Good at teaching → Subscription / Digital products<br />
+
+Creative / branding → DTC e‑commerce<br />
+
+Tech or organizing people → Marketplace or app
+</p>
+
+<select id="apple6">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 3: Pick a VERY Specific Problem<br />
+
+Bad idea:<br />
+❌ “An app for everyone”<br />
+
+Good idea:<br />
+✅ “A budgeting app for Caribbean freelancers”<br />
+✅ “Online fitness program for busy professionals”<br />
+✅ “Marketplace for Caribbean creatives to sell internationally”<br />
+
+👉 The more specific, the easier it is to sell.</p>
+
+<select id="apple7">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 4: Validate Before Spending Money<br />
+
+Do at least one of these:<br />
+
+Post the idea on social media and ask for feedback<br />
+
+Talk to 5–10 potential customers<br />
+
+Create a simple landing page with a signup form<br />
+
+Run a small WhatsApp or Instagram poll<br />
+
+
+Goal:<br />
+➡️ Confirm people actually want it<br />
+➡️ See what they’re willing to pay</p>
+
+<select id="apple8">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 5: Build the Simplest Version (MVP)<br />
+
+Don’t overbuild.<br />
+
+Examples:<br />
+
+Subscription → Google Drive + Zoom + Stripe<br />
+
+Marketplace → Instagram + WhatsApp + manual payments<br />
+
+DTC → Shopify + 1 product<br />
+
+Content → TikTok/YouTube + free content<br />
+
+
+👉 Start ugly. Improve later.
+</p>
+
+<select id="apple9">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 6: Set Pricing Early<br />
+
+Avoid “free forever.”<br />
+
+Simple pricing ideas:<br />
+
+Subscription: $10–$30/month<br />
+
+Digital product: $15–$99<br />
+
+Commission: 5–15%<br />
+
+Physical products: 2–3× cost
+
+</p>
+
+<select id="apple10">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 7: Launch to a Small Audience<br />
+
+Friends & family<br />
+
+WhatsApp groups<br />
+
+Instagram, TikTok, Facebook<br />
+
+Local communities + online forums<br />
+
+
+Goal: First 10 customers, not perfection.</p>
+
+<select id="apple11">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 8: Improve Based on Feedback<br />
+
+Ask:<br />
+
+What do you like?<br />
+
+What’s confusing?<br />
+
+What would make this worth more?<br />
+
+
+Then:<br />
+
+Fix problems<br />
+
+Improve messaging<br />
+
+Raise prices slowly if value increases</p>
+
+<select id="apple12">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="muted">STEP 9: Scale Internationally Once it works locally:<br />
+
+Accept international payments<br />
+
+Market globally online<br />
+
+Partner with influencers or affiliates<br />
+
+Automate what’s manual</p>
+
+<select id="apple13">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<center><marquee behavior="alternate"><h1>(MMPBC) MoneyMagnet (PBC)</h1></marquee></center><hr />
+
+<p class="mute">Below you’ll get:<br />
+
+1. Best model recommendation framework<br />
+
+
+2. 1‑page business plan template (filled example)<br />
+
+
+3. 30‑day launch plan<br />
+
+
+4. Basic branding + pricing guidance<br />
+
+
+5. How To Scale (AFTER FIRST SALES)<br />
+
+
+
+You can follow this exactly.</p><hr />
+
+<center><marquee behavior="alternate"><h1>(MMPBC) MoneyMagnet (PBC)</h1></marquee></center><hr />
+
+<p class="mute">1️⃣ CHOOSE THE BEST MODEL (FAST DECISION GUIDE)<br />
+
+Use this to lock in ONE model.<br />
+
+If you want low startup cost + global reach →<br />
+
+✅ Content + Digital Products<br />
+
+If you want predictable monthly income →<br />
+
+✅ Subscription<br />
+
+If you want to sell physical products with strong Caribbean branding →<br />
+
+✅ DTC E‑commerce<br />
+
+If you want to connect people and earn commissions →<br />
+
+✅ Marketplace<br />
+
+👉 For most small Caribbean startups,<br />
+ the BEST starting point is:<br />
+Content + Digital Products OR Subscription<br />
+(low risk, scalable, international-friendly)<br />
+
+For the rest of this plan, I’ll assume:<br />
+
+ Online business serving Caribbean + international customers</p>
+
+<select id="apple13">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="mute">2️⃣ 1‑PAGE BUSINESS PLAN (SIMPLE & POWERFUL)<br />
+
+Business Name (Working Title)<br />
+
+(Temporary — can change later)<br />
+Example: Caribbean Pro Hub<br />
+
+
+---<br />
+
+Problem<br />
+
+People want:<br />
+
+Skills, income, or wellness<br />
+
+Culturally relevant solutions<br />
+
+Affordable online options<br />
+
+
+
+---<br />
+
+Solution<br />
+
+An online platform offering:<br />
+
+Digital content (videos, guides, tools)<br />
+
+Optional subscription or paid products<br />
+
+Focused on Caribbean/global audience<br />
+
+
+
+---<br />
+
+Target Customer<br />
+
+Age: 18–45<br />
+
+Location: Caribbean + diaspora + international<br />
+
+Online, mobile-first, price-conscious<br />
+
+
+
+---<br />
+
+Business Model<br />
+
+Choose ONE to start:<br />
+
+Subscription: $15–$25/month<br />
+OR<br />
+
+Digital Products: $29–$99 one-time<br />
+
+
+
+---<br />
+
+Marketing Channels<br />
+
+Instagram<br />
+
+TikTok<br />
+
+WhatsApp<br />
+
+YouTube (optional)<br />
+
+
+
+---<br />
+
+Startup Costs (Low)<br />
+
+Internet<br />
+
+Phone/Laptop<br />
+
+Website or platform ($0–$30/month)<br />
+
+Payment processor<br />
+
+
+
+---<br />
+
+Revenue Goal (First 90 Days)<br />
+
+50 customers × $20 = $1,000/month<br />
+
+Scale from there<br />
+
+---
+</p>
+
+<select id="apple13">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="mute">3️⃣ 30‑DAY LAUNCH PLAN (VERY IMPORTANT)
+
+WEEK 1: IDEA + VALIDATION<br />
+
+✅ Choose niche (example below)<br />
+✅ Define ONE problem<br />
+✅ Ask real people<br />
+
+Example niches:<br />
+
+Online skills for Caribbean youth<br />
+
+Fitness / wellness for busy professionals<br />
+
+Freelancing or remote work guidance<br />
+
+Budgeting / money management<br />
+
+
+📌 Action:<br />
+
+Talk to 5–10 people<br />
+
+Ask: “Would you pay for this? How much?”<br />
+
+
+
+---<br />
+
+WEEK 2: BUILD MVP (MINIMUM VERSION)<br />
+
+✅ Don’t overbuild<br />
+
+Tools:<br />
+
+Google Docs / Notion<br />
+
+WhatsApp<br />
+
+Stripe / PayPal<br />
+
+Instagram page<br />
+
+
+📌 Action:<br />
+
+Create first product/service<br />
+
+Create simple payment option<br />
+
+Write clear offer<br />
+
+
+
+---<br />
+
+WEEK 3: BRANDING + CONTENT<br />
+
+✅ Simple, not perfect<br />
+
+Brand basics:<br />
+
+Name<br />
+
+Clear message<br />
+
+One color + clean font<br />
+
+
+📌 Content plan:<br />
+
+3–5 short videos per week<br />
+
+Educational + relatable<br />
+
+Call to action: “Join / Buy / Sign up”<br />
+
+
+
+---<br />
+
+WEEK 4: LAUNCH<br />
+
+✅ Launch to a small audience<br />
+
+📌 Action:<br />
+
+Announce on WhatsApp & socials<br />
+
+Offer early‑bird price<br />
+
+Collect feedback<br />
+
+Get testimonials<br />
+
+
+🎯 Goal:<br />
+First 10–20 paying customers<br />
+
+
+---
+</p>
+
+<select id="apple13">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="mute">4️⃣ PRICING STRATEGY (START HERE)<br />
+
+Digital Product<br />
+
+Entry: $19–$29<br />
+
+Main: $49–$99<br />
+
+
+Subscription<br />
+
+Starter: $10–$15/month<br />
+
+Premium: $20–$30/month<br />
+
+
+👉 Price for value, not fear.<br />
+You can always adjust.<br />
+
+
+---
+</p>
+
+<select id="apple13">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+<p class="mute">5️⃣ HOW TO SCALE (AFTER FIRST SALES)<br />
+
+Once people are paying:<br />
+
+Improve content/product<br />
+
+Automate payments<br />
+
+Add upsells<br />
+
+Raise prices slightly<br />
+
+Expand internationally<br />
+
+
+
+---<br />
+
+NEXT QUESTION FOR YOU (VERY IMPORTANT)<br />
+
+To customize this fully, tell me ONE thing:<br />
+
+👉 Which direction do you want to start with?<br />
+
+1. Skills / education<br />
+
+
+2. Fitness / wellness<br />
+
+
+3. Business / freelancing<br />
+
+
+4. Physical products<br />
+
+
+5. Something else (tell me)<br />
+
+
+
+Once you answer, I’ll:<br />
+
+Pick the exact niche<br />
+
+Name the business<br />
+
+Design the offer<br />
+
+Outline your first product<br />
+
+
+We’ll build this properly 💪</p>
+
+<select id="apple13">
+<option value="5. Content + Advertising + Digital Products">5. Content + Advertising + Digital Products</option>
+<option value="Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:">Why it works: Build audience first, monetize in multiple ways.
+Caribbean ideas:</option>
+<option value="YouTube, TikTok, or blogs about culture, business, travel, or lifestyle">YouTube, TikTok, or blogs about culture, business, travel, or lifestyle</option>
+<option value="Monetize via ads, brand partnerships, online courses, ebooks, or coaching">Monetize via ads, brand partnerships, online courses, ebooks, or coaching</option>
+<option value="Scales globally with minimal startup cost.">Scales globally with minimal startup cost.</option>
+<option value="International reach: Digital products can be sold globally with low overhead.">International reach: Digital products can be sold globally with low overhead.</option>
+</select><hr /><a href="https://www.investopedia.com/terms/b/business.asp" target="_blank">Invsetopedia.</a><hr />
+
+        </div>
+        <div class="feature card">
+          <h3>Responsive</h3>
+          <p class="muted">Works beautifully on phones, tablets and desktops.</p>
+        </div>
+        <div class="feature card">
+          <h3>Extendable</h3>
+          <p class="muted">Built to be your starting point — easy to customize and expand.</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card" style="justify-self:end">
+      <h3 style="margin-top:0">Quick stats</h3>
+      <div style="display:flex;gap:12px;margin-top:12px">
+        <div style="flex:1">
+          <div style="font-size:1.5rem;font-weight:700">120+</div>
+          <div class="muted">Projects</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:1.5rem;font-weight:700">15k</div>
+          <div class="muted">Users</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;color:var(--muted)">Add analytics, links to your work, or a small portfolio here.</div>
+    </aside>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="container">
+    <div class="card">
+      <h2>About Us</h2>
+      <p class="muted">We build beautiful, accessible websites that scale. Use this template as a launchpad — add your own pages or connect it to a framework or backend.</p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start">
+      <div class="card">
+        <h2>Services</h2>
+        <p class="muted">Full-stack design and development, consulting, and optimization.</p>
+        <ul style="margin-top:8px;color:var(--muted)">
+          <li>Web design & UI/UX</li>
+          <li>Frontend & API integrations</li>
+          <li>Performance & accessibility audits</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Pricing</h3>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <div class="card" style="flex:1;text-align:center">
+            <div style="font-weight:700">Starter</div>
+            <div class="muted">$499</div>
+            <div class="muted" style="font-size:0.9rem;margin-top:6px">Single page, basic support</div>
+          </div>
+          <div class="card" style="flex:1;text-align:center">
+            <div style="font-weight:700">Pro</div>
+            <div class="muted">$1,499</div>
+            <div class="muted" style="font-size:0.9rem;margin-top:6px">Multi-page, CMS, analytics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="container">
+    <h2>Gallery</h2>
+    <p class="muted">Click an image to view it larger.</p>
+    <div class="gallery-grid" style="margin-top:12px">
+      <!-- Placeholder images using data URLs (simple colored blocks) to keep single-file -->
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%2306b6d4'/><text x='50%' y='50%' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle'>Image+1</text></svg>" alt="Gallery image 1" data-full>
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%237c3aed'/><text x='50%' y='50%' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle'>Image+2</text></svg>" alt="Gallery image 2" data-full>
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%230f1724'/><text x='50%' y='50%' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle'>Image+3</text></svg>" alt="Gallery image 3" data-full>
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%23ef4444'/><text x='50%' y='50%' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle'>Image+4</text></svg>" alt="Gallery image 4" data-full>
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%2310b981'/><text x='50%' y='50%' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle'>Image+5</text></svg>" alt="Gallery image 5" data-full>
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%23f59e0b'/><text x='50%' y='50%' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle'>Image+6</text></svg>" alt="Gallery image 6" data-full>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container">
+    <h2>Contact</h2>
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:1rem">
+      <div class="card">
+        <form id="contactForm" onsubmit="submitContact(event)">
+          <label class="muted">Name <input class="input" name="name" required placeholder="Your name"></label>
+          <label class="muted">Email <input class="input" name="email" type="email" required placeholder="you@example.com"></label>
+          <label class="muted">Message <textarea name="message" required placeholder="How can we help?"></textarea></label>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn btn-primary" type="submit">Send message</button>
+            <button class="btn btn-ghost" type="reset">Reset</button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="card">
+        <h3>Contact details</h3>
+        <p class="muted">Email: rohanvilliers96@gmail.com</p>
+        <p class="muted">Phone: +1 876 436 9057</p>
+        <div style="margin-top:12px">
+          <strong>Office</strong>
+          <p class="muted">18 coralsea parth, <br />
+                   1396 seaview gardens phase 2. <br />
+                    Kingston 11,  Jamaica. </p>
+                <p><a href="tel:18764369057">Contact</a></p>
+                <p><a href="mailto:rohanvilliers96@gmail.com">Email<a/></p>
+                <p><a href ="https://chatgpt.com/gg/v/695f88604f94819fb78cac9a0f7e63da?token=wzpbMLcP9GefjIN7b8F3xA" target="_ blank">chatGPT<a/></p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div class="muted">© 2025 My Modern Site</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <a class="muted" href="#">Privacy</a>
+      <a class="muted" href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Gallery modal -->
+<div id="galleryModal" class="modal-backdrop" aria-hidden="true" style="display:none">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <strong>Preview</strong>
+      <button onclick="closeGallery()" aria-label="Close">Close</button>
+    </div>
+    <div style="margin-top:12px">
+      <img id="galleryImg" src="" alt="Preview" style="width:100%;height:360px;object-fit:contain;border-radius:8px">
+    </div>
+  </div>
+</div>
+
+<!-- Login / Signup modal -->
+<div id="authModal" class="modal-backdrop" aria-hidden="true" style="display:none">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <strong id="authTitle">Login</strong>
+      <button onclick="closeAuth()" aria-label="Close">Close</button>
+    </div>
+    <div style="margin-top:12px">
+      <form id="authForm" onsubmit="submitAuth(event)">
+        <div id="authFields">
+          <!-- fields injected by JS -->
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary" type="submit">Continue</button>
+          <button type="button" class="btn btn-ghost" onclick="toggleAuthMode()">Switch</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+  </div>  <script>
+    // --- Utilities ---
+    const app = document.getElementById('app');
+    const themeToggle = document.getElementById('themeToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuBtn = document.getElementById('menuBtn');
+
+    // Restore theme from localStorage
+    const savedTheme = localStorage.getItem('site-theme');
+    if(savedTheme) app.setAttribute('data-theme', savedTheme);
+    updateThemeButton();
+
+    themeToggle.addEventListener('click', ()=>{
+      const current = app.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      app.setAttribute('data-theme', next);
+      localStorage.setItem('site-theme', next);
+      updateThemeButton();
+    });
+    function updateThemeButton(){
+      const t = app.getAttribute('data-theme');
+      themeToggle.textContent = t === 'dark' ? 'Light' : 'Dark';
+      themeToggle.setAttribute('aria-pressed', t === 'light');
+    }
+
+    // Mobile menu toggle
+    menuBtn.addEventListener('click', ()=>{
+      mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Smooth scroll helper
+    function scrollToSection(id){
+      document.getElementById(id).scrollIntoView({behavior:'smooth'});
+    }
+
+    // Fade in animations when visible
+    const faders = Array.from(document.querySelectorAll('.fade-in'));
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+    }, {threshold:0.15});
+    faders.forEach(f=>obs.observe(f));
+
+    // Contact form handler (demo only)
+    function submitContact(e){
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      // In a real site, you would POST to a server endpoint here.
+      alert('Thanks, ' + data.get('name') + '! Your message was received (demo).');
+      form.reset();
+    }
+
+    // Gallery modal
+    const galleryModal = document.getElementById('galleryModal');
+    const galleryImg = document.getElementById('galleryImg');
+    document.querySelectorAll('.gallery-grid img').forEach(img=>{
+      img.addEventListener('click', ()=>{
+        galleryImg.src = img.src;
+        galleryModal.style.display = 'flex';
+      });
+    });
+    function closeGallery(){ galleryModal.style.display = 'none'; galleryImg.src=''; }
+
+    // Auth modal + simple login/signup mock
+    const authModal = document.getElementById('authModal');
+    const authTitle = document.getElementById('authTitle');
+    const authFields = document.getElementById('authFields');
+    let authMode = 'login'; // or 'signup'
+
+    document.getElementById('openLogin').addEventListener('click', ()=>openAuth('login'));
+    function openAuth(mode='login'){
+      authMode = mode;
+      authModal.style.display = 'flex';
+      renderAuth();
+    }
+    function closeAuth(){ authModal.style.display = 'none'; }
+    function openSignup(){ openAuth('signup'); }
+
+    function renderAuth(){
+      authTitle.textContent = authMode === 'login' ? 'Login' : 'Create account';
+      authFields.innerHTML = '';
+      if(authMode === 'login'){
+        authFields.innerHTML = `
+          <label class="muted">Email <input class="input" name="email" type="email" required></label>
+          <label class="muted">Password <input class="input" name="password" type="password" required minlength="6"></label>
+        `;
+      } else {
+        authFields.innerHTML = `
+          <label class="muted">Name <input class="input" name="name" required></label>
+          <label class="muted">Email <input class="input" name="email" type="email" required></label>
+          <label class="muted">Password <input class="input" name="password" type="password" required minlength="6"></label>
+        `;
+      }
+    }
+
+    function toggleAuthMode(){ authMode = authMode === 'login' ? 'signup' : 'login'; renderAuth(); }
+
+    function submitAuth(e){
+      e.preventDefault();
+      const data = new FormData(e.target);
+      if(authMode === 'login'){
+        alert('Welcome back, ' + (data.get('email') || 'user') + ' (demo).');
+      } else {
+        alert('Thanks for signing up, ' + (data.get('name') || 'friend') + ' (demo).');
+      }
+      closeAuth();
+    }
+
+    // Accessibility: close modals with Escape
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        closeGallery(); closeAuth();
+      }
+    });
+
+    // Basic progressive enhancement: detect reduced-motion
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      document.documentElement.style.scrollBehavior = 'auto';
+    }
+
+    // Ensure anchor links close mobile menu
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', ()=>{ if(mobileMenu) mobileMenu.style.display='none'; });
+    });
+
+    // Small demo: load stats after a moment
+    setTimeout(()=>{
+      document.querySelectorAll('.card strong, .card h3').forEach(el=>el.classList?.add('show'));
+    },400);
+
+  </script></body>
+</html>
